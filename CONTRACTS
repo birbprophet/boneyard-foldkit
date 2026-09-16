@@ -1,0 +1,16 @@
+@cc [owner:birbprophet,label:capture] boneyard-capture-shape
+Every rendered wrapper MUST carry `data-boneyard="<name>"` in loading and
+non-loading renders alike, and its first element child MUST be the content
+wrapper. `boneyard build` locates wrappers by that attribute and snapshots
+`el.firstElementChild`.
+
+@cc [owner:birbprophet,label:capture] build-hook-before-capture
+While `window.__BONEYARD_BUILD` is set, `view` MUST render children plainly.
+The capture entry owns installing `window.__BONEYARD_SNAPSHOT` before rendering;
+the snapshot walk skips `visibility:hidden` subtrees.
+
+@cc [owner:birbprophet,label:architecture] view-is-pure
+`view` MUST stay a pure Foldkit view: no hooks, effects, timers, or runtime
+measurement. Breakpoint selection MUST be emitted as CSS media-query ranges
+over `[data-boneyard-bp]` layers, never read from `innerWidth` or
+`ResizeObserver` at render time.
